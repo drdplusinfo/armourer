@@ -40,17 +40,20 @@ use Granam\Strict\Object\StrictObject;
 
 class Armourer extends StrictObject
 {
-    /**
-     * @var Tables
-     */
+    /** @var Tables */
     private $tables;
 
-    /**
-     * @param Tables $tables
-     */
     public function __construct(Tables $tables)
     {
         $this->tables = $tables;
+    }
+
+    /**
+     * @return Tables
+     */
+    public function getTables(): Tables
+    {
+        return $this->tables;
     }
 
     // WEAPONS ONLY

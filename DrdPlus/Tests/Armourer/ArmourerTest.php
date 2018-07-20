@@ -57,6 +57,16 @@ class ArmourerTest extends TestWithMockery
     /**
      * @test
      */
+    public function I_can_get_back_tables(): void
+    {
+        $tables = Tables::getIt();
+        $armourer = new Armourer($tables);
+        self::assertSame($tables, $armourer->getTables());
+    }
+
+    /**
+     * @test
+     */
     public function I_can_find_out_if_can_use_each_armament(): void
     {
         $this->I_can_find_out_if_can_use_body_armor();
