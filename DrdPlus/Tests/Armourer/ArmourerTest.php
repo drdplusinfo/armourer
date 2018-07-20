@@ -57,6 +57,15 @@ class ArmourerTest extends TestWithMockery
     /**
      * @test
      */
+    public function I_can_create_it_easily_by_factory_method(): void
+    {
+        $armourer = Armourer::getIt();
+        self::assertSame(Tables::getIt(), $armourer->getTables());
+    }
+
+    /**
+     * @test
+     */
     public function I_can_get_back_tables(): void
     {
         $tables = Tables::getIt();

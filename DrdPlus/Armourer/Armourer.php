@@ -40,6 +40,16 @@ use Granam\Strict\Object\StrictObject;
 
 class Armourer extends StrictObject
 {
+    public static function getIt(): Armourer
+    {
+        static $armourer;
+        if ($armourer === null) {
+            $armourer = new static(Tables::getIt());
+        }
+
+        return $armourer;
+    }
+
     /** @var Tables */
     private $tables;
 
