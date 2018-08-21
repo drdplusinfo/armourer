@@ -1,7 +1,7 @@
 {
   "name": "drdplus/armourer",
   "license": "MIT",
-  "type": "project",
+  "type": "library",
   "description": "DrD+ armaments and their stats",
   "autoload": {
     "psr-4": {
