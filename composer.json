@@ -10,7 +10,6 @@
   },
   "require": {
     "php": ">=7.1",
-    "drdplus/tables": "^2.5",
     "drdplus/properties": "^2.1"
   },
   "require-dev": {
