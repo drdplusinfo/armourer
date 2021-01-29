@@ -49,27 +49,17 @@ class Armourer extends StrictObject
         return $armourer;
     }
 
-    /** @var Tables */
-    private $tables;
-
-    public function __construct(Tables $tables)
+    public function __construct(private Tables $tables)
     {
-        $this->tables = $tables;
     }
 
-    /**
-     * @return Tables
-     */
     public function getTables(): Tables
     {
         return $this->tables;
     }
 
     // WEAPONS ONLY
-
     /**
-     * @param ArmamentCode $armamentCode
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      */
     public function getRequiredStrengthForArmament(ArmamentCode $armamentCode): int
@@ -81,8 +71,6 @@ class Armourer extends StrictObject
      * Length of a weapon (or shield) increases fight number.
      * Note about shield: every shield is considered as a weapon of length 0.
      *
-     * @param WeaponlikeCode $weaponlikeCode
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownMeleeWeaponlike
      */
     public function getLengthOfWeaponOrShield(WeaponlikeCode $weaponlikeCode): int
@@ -98,8 +86,6 @@ class Armourer extends StrictObject
     /**
      * Even shield can ba used as weapon, just quite ineffective.
      *
-     * @param WeaponlikeCode $weaponlikeCode
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
      */
     public function getWoundsOfWeaponlike(WeaponlikeCode $weaponlikeCode): int
@@ -110,8 +96,6 @@ class Armourer extends StrictObject
     /**
      * Even shield can ba used as weapon, just quite ineffective.
      *
-     * @param WeaponlikeCode $weaponlikeCode
-     * @return string
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
      */
     public function getWoundsTypeOfWeaponlike(WeaponlikeCode $weaponlikeCode): string
@@ -122,8 +106,6 @@ class Armourer extends StrictObject
     /**
      * Note about shield: shield is always used as a shield for cover, even if is used for desperate attack.
      *
-     * @param WeaponlikeCode $weaponOrShield
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
      */
     public function getCoverOfWeaponOrShield(WeaponlikeCode $weaponOrShield): int
@@ -134,8 +116,6 @@ class Armourer extends StrictObject
     /**
      * Even shield can be used as weapon, just quite ineffective.
      *
-     * @param WeaponlikeCode $weaponlikeCode
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
      */
     public function getOffensivenessOfWeaponlike(WeaponlikeCode $weaponlikeCode): int
@@ -144,8 +124,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param ArmamentCode $armamentCode
-     * @return float
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      */
     public function getWeightOfArmament(ArmamentCode $armamentCode): float
@@ -154,8 +132,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param WeaponlikeCode $weaponlikeCode
-     * @return bool
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
      */
     public function isTwoHandedOnly(WeaponlikeCode $weaponlikeCode): bool
@@ -164,8 +140,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param WeaponlikeCode $weaponlikeCode
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
      */
     public function getMaximalApplicableStrength(WeaponlikeCode $weaponlikeCode): int
@@ -180,8 +154,6 @@ class Armourer extends StrictObject
     /**
      * There are weapons so small so can not be hold by two hands
      *
-     * @param WeaponlikeCode $weaponlikeCode
-     * @return bool
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
      */
     public function isOneHandedOnly(WeaponlikeCode $weaponlikeCode): bool
@@ -193,8 +165,6 @@ class Armourer extends StrictObject
      * Not all weapons can be hold by two hands - some of them are simply so small so it is not possible or highly
      * ineffective.
      *
-     * @param WeaponlikeCode $weaponToHoldByTwoHands
-     * @return bool
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
      */
     public function canHoldItByTwoHands(WeaponlikeCode $weaponToHoldByTwoHands): bool
@@ -209,8 +179,6 @@ class Armourer extends StrictObject
     /**
      * Some weapons are so specific so keeping them in a single hand would make them highly inefficient, like a halberd.
      *
-     * @param WeaponlikeCode $weaponToHoldByTwoHands
-     * @return bool
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
      */
     public function canHoldItByOneHand(WeaponlikeCode $weaponToHoldByTwoHands): bool
@@ -222,8 +190,6 @@ class Armourer extends StrictObject
      * Note about SHIELD: it has always length of 0 and therefore you can NOT hold it by both hands (but the last word
      * has DM).
      *
-     * @param WeaponlikeCode $weaponlikeCode
-     * @return bool
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
      */
     public function canHoldItByOneHandAsWellAsTwoHands(WeaponlikeCode $weaponlikeCode): bool
@@ -232,12 +198,9 @@ class Armourer extends StrictObject
     }
 
     // shield-and-armor-specific
-
     /**
      * Restriction affects fight number (Fight number malus).
      *
-     * @param ProtectiveArmamentCode $protectiveArmamentCode
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownProtectiveArmament
      */
     public function getRestrictionOfProtectiveArmament(ProtectiveArmamentCode $protectiveArmamentCode): int
@@ -247,10 +210,7 @@ class Armourer extends StrictObject
     }
 
     // range-weapon-specific
-
     /**
-     * @param RangedWeaponCode $rangedWeaponCode
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownRangedWeapon
      */
     public function getRangeOfRangedWeapon(RangedWeaponCode $rangedWeaponCode): int
@@ -259,10 +219,7 @@ class Armourer extends StrictObject
     }
 
     // projectile-specific
-
     /**
-     * @param ProjectileCode $projectileCode
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownProjectile
      */
     public function getOffensivenessModifierOfProjectile(ProjectileCode $projectileCode): int
@@ -271,8 +228,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param ProjectileCode $projectileCode
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownProjectile
      */
     public function getWoundsModifierOfProjectile(ProjectileCode $projectileCode): int
@@ -281,8 +236,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param ProjectileCode $projectileCode
-     * @return string
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownProjectile
      */
     public function getWoundsTypeOfProjectile(ProjectileCode $projectileCode): string
@@ -291,8 +244,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param ProjectileCode $projectileCode
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownProjectile
      */
     public function getRangeModifierOfProjectile(ProjectileCode $projectileCode): int
@@ -301,13 +252,9 @@ class Armourer extends StrictObject
     }
 
     // ARMAMENTS USAGE AFFECTED BY STRENGTH
-
     /**
      * Gives effective strength usable for attack with given weapon (has usage for bows and crossbows).
      *
-     * @param WeaponlikeCode $weaponlikeCode
-     * @param Strength $currentStrength
-     * @return Strength
      * @throws \DrdPlus\Tables\Armaments\Weapons\Ranged\Exceptions\UnknownBow
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownRangedWeapon
      */
@@ -335,10 +282,7 @@ class Armourer extends StrictObject
     /**
      * Note: spear can be both range and melee, but required strength is for melee and range usages the same
      *
-     * @param ArmamentCode $armamentCode
      * @param Strength $currentStrength INCLUDING bonus for holding
-     * @param Size $bodySize
-     * @return bool
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      */
     public function canUseArmament(ArmamentCode $armamentCode, Strength $currentStrength, Size $bodySize): bool
@@ -351,9 +295,7 @@ class Armourer extends StrictObject
     /**
      * Note: spear can be both range and melee, but required strength is for melee and range usages the same
      *
-     * @param WeaponlikeCode $weaponlikeCode
      * @param Strength $currentStrength INCLUDING bonus for holding
-     * @return bool
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      */
     public function canUseWeaponlike(WeaponlikeCode $weaponlikeCode, Strength $currentStrength): bool
@@ -368,9 +310,6 @@ class Armourer extends StrictObject
     /**
      * See PPH page 91, right column
      *
-     * @param ArmamentCode $armamentCode
-     * @param Size $bodySize
-     * @param Strength $currentStrength
      * @return int positive number
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      */
@@ -400,9 +339,6 @@ class Armourer extends StrictObject
     /**
      * Note about shield: this malus is very same if used shield as a protective item as well as a weapon.
      *
-     * @param WeaponlikeCode $weaponOrShield
-     * @param Strength $currentStrength
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownMeleeWeaponlike
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
@@ -421,9 +357,6 @@ class Armourer extends StrictObject
     /**
      * Even shield can ba used as weapon, just quite ineffective.
      *
-     * @param WeaponlikeCode $weaponlikeCode
-     * @param Strength $currentStrength
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\CanNotUseWeaponBecauseOfMissingStrength
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
@@ -443,10 +376,6 @@ class Armourer extends StrictObject
      * Distance modifier can be solved very roughly by a simple table or more precisely with continual values by a
      * calculation. This uses that calculation. See PPH page 104 left column.
      *
-     * @param EncounterRange $currentEncounterRange
-     * @param Distance $targetDistance
-     * @param MaximalRange $currentMaximalRange
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\DistanceIsOutOfMaximalRange
      * @throws \DrdPlus\Tables\Armaments\Exceptions\EncounterRangeCanNotBeGreaterThanMaximalRange
      * @throws \DrdPlus\Tables\Combat\Attacks\Exceptions\DistanceOutOfKnownValues
@@ -480,9 +409,6 @@ class Armourer extends StrictObject
 
     /**
      * See PPH page 104 right column top, @link https://pph.drdplus.info/#oprava_za_velikost
-     *
-     * @param Size $targetSize
-     * @return int
      */
     public function getAttackNumberModifierBySize(Size $targetSize): int
     {
@@ -494,9 +420,6 @@ class Armourer extends StrictObject
      * destroyed.
      * Note about shield: this malus is very same if used shield as a protective item as well as a weapon.
      *
-     * @param WeaponlikeCode $weaponOrShield
-     * @param Strength $currentStrength
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownMeleeWeaponlike
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\CanNotUseWeaponBecauseOfMissingStrength
@@ -519,9 +442,6 @@ class Armourer extends StrictObject
     /**
      * Even shield can ba used as weapon, just quite ineffective.
      *
-     * @param WeaponlikeCode $weaponlikeCode
-     * @param Strength $currentStrength
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\CanNotUseWeaponBecauseOfMissingStrength
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
@@ -538,13 +458,9 @@ class Armourer extends StrictObject
     }
 
     // range-weapon-specific usage affected by properties
-
     /**
      * The final number of rounds needed to load a weapon.
      *
-     * @param RangedWeaponCode $rangedWeaponCode
-     * @param Strength $currentStrength
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\CanNotUseWeaponBecauseOfMissingStrength
      */
     public function getLoadingInRoundsByStrengthWithRangedWeapon(
@@ -560,9 +476,6 @@ class Armourer extends StrictObject
     /**
      * The relative number of rounds as a malus to standard number of rounds needed to load a weapon.
      *
-     * @param RangedWeaponCode $rangedWeaponCode
-     * @param Strength $currentStrength
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\CanNotUseWeaponBecauseOfMissingStrength
      */
     public function getLoadingInRoundsMalusByStrengthWithRangedWeapon(
@@ -578,10 +491,6 @@ class Armourer extends StrictObject
     /**
      * Gives bonus to range of a weapon, which can be turned into meters.
      *
-     * @param WeaponlikeCode $weaponlikeCode
-     * @param Strength $currentStrength
-     * @param Speed $currentSpeed
-     * @return EncounterRange
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\CanNotUseWeaponBecauseOfMissingStrength
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownRangedWeapon
@@ -606,9 +515,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param RangedWeaponCode $rangedWeaponCode
-     * @param Strength $currentStrength
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\CanNotUseWeaponBecauseOfMissingStrength
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      * @throws \DrdPlus\Tables\Armaments\Weapons\Ranged\Exceptions\UnknownBow
@@ -636,9 +542,6 @@ class Armourer extends StrictObject
      * Bows get bonus to range from used strength (up to maximal strength applicable for given bow).
      * Other ranged weapons gets no range bonus (zero) from strength.
      *
-     * @param RangedWeaponCode $rangedWeaponCode
-     * @param Strength $currentStrength
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\CanNotUseWeaponBecauseOfMissingStrength
      * @throws \DrdPlus\Tables\Armaments\Weapons\Ranged\Exceptions\UnknownBow
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownRangedWeapon
@@ -661,9 +564,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param RangedWeaponCode $rangedWeaponCode
-     * @param Speed $speed
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\CanNotUseWeaponBecauseOfMissingStrength
      */
     private function getEncounterRangeBonusBySpeed(RangedWeaponCode $rangedWeaponCode, Speed $speed): int
@@ -682,10 +582,6 @@ class Armourer extends StrictObject
      * Others have their maximal (and still controllable) range same as encounter range.
      * See PPH page 104 left column.
      *
-     * @param WeaponlikeCode $weaponlikeCode
-     * @param Strength $currentStrength
-     * @param Speed $currentSpeed
-     * @return MaximalRange
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\CanNotUseWeaponBecauseOfMissingStrength
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownRangedWeapon
@@ -708,12 +604,7 @@ class Armourer extends StrictObject
     }
 
     // armor-specific usage affected by strength
-
     /**
-     * @param ArmorCode $armorCode
-     * @param Strength $currentStrength
-     * @param Size $bodySize
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\CanNotUseArmorBecauseOfMissingStrength
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      */
@@ -729,10 +620,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param ArmorCode $armorCode
-     * @param Strength $currentStrength
-     * @param Size $bodySize
-     * @return string
      * @throws \DrdPlus\Tables\Armaments\Exceptions\CanNotUseArmorBecauseOfMissingStrength
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      * @throws \Granam\Integer\Tools\Exceptions\WrongParameterType
@@ -750,13 +637,10 @@ class Armourer extends StrictObject
     }
 
     // MISSING WEAPON SKILL
-
     /**
      * Note about shields: there is no such skill as FightWithShields, any attempt to fight with shield results into
      * zero skill rank.
      *
-     * @param PositiveInteger $weaponTypeSkillRank
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Partials\Exceptions\UnexpectedSkillRank
      */
     public function getFightNumberMalusForSkillRank(PositiveInteger $weaponTypeSkillRank): int
@@ -768,8 +652,6 @@ class Armourer extends StrictObject
      * Note about shields: there is no such skill as FightWithShields, any attempt to fight with shield results into
      * zero skill rank.
      *
-     * @param PositiveInteger $weaponTypeSkillRank
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Partials\Exceptions\UnexpectedSkillRank
      */
     public function getAttackNumberMalusForSkillRank(PositiveInteger $weaponTypeSkillRank): int
@@ -783,9 +665,6 @@ class Armourer extends StrictObject
      * have maximal skill). Correct is @see ShieldUsageSkillTable
      * Note about shield: shield is always used as a shield for cover, even if is used for desperate attack.
      *
-     * @param PositiveInteger $weaponTypeSkillRank
-     * @param WeaponlikeCode $weaponOrShield
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Partials\Exceptions\UnexpectedSkillRank
      */
     public function getCoverMalusForSkillRank(PositiveInteger $weaponTypeSkillRank, WeaponlikeCode $weaponOrShield): int
@@ -802,8 +681,6 @@ class Armourer extends StrictObject
      * Note about shields: there is no such skill as FightWithShields, any attempt to fight with shield results into
      * zero skill rank.
      *
-     * @param PositiveInteger $weaponTypeSkillRank
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Partials\Exceptions\UnexpectedSkillRank
      */
     public function getBaseOfWoundsMalusForSkillRank(PositiveInteger $weaponTypeSkillRank): int
@@ -812,13 +689,9 @@ class Armourer extends StrictObject
     }
 
     // missing shield-specific skill
-
     /**
      * Applicable to lower shield or armor Restriction (Fight number malus), but can not make it positive.
      *
-     * @param ProtectiveArmamentCode $protectiveArmamentCode
-     * @param PositiveInteger $protectiveArmamentSkillRank
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Partials\Exceptions\UnexpectedSkillRank
      */
     public function getProtectiveArmamentRestrictionBonusForSkillRank(
@@ -833,9 +706,6 @@ class Armourer extends StrictObject
     /**
      * Restriction is Fight number malus.
      *
-     * @param ProtectiveArmamentCode $protectiveArmamentCode
-     * @param PositiveInteger $protectiveArmamentSkillRank
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Partials\Exceptions\UnexpectedSkillRank
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownProtectiveArmament
      */
@@ -854,13 +724,9 @@ class Armourer extends StrictObject
     }
 
     // summations
-
     /**
      * Gives base of wound with a weapon and user strength.
      *
-     * @param WeaponlikeCode $weaponlikeCode
-     * @param Strength $currentStrength
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\CanNotUseWeaponBecauseOfMissingStrength
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
@@ -884,9 +750,6 @@ class Armourer extends StrictObject
      * Melee weapon holdable by a single hand but holt by two hands gives more damage (+2).
      * PPH page 92 right column
      *
-     * @param WeaponlikeCode $weaponlikeCode
-     * @param ItemHoldingCode $weaponlikeHolding
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\CanNotHoldWeaponByTwoHands
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
      */
@@ -916,10 +779,6 @@ class Armourer extends StrictObject
      * If one-handed weapon or shield is kept by both hands, the required strength for weapon is lower
      * (fighter strength is considered higher respectively), see details in PPH page 93, left column.
      *
-     * @param WeaponlikeCode $weaponOrShield
-     * @param ItemHoldingCode $holding
-     * @param Strength $strengthOfMainHand
-     * @return Strength
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
      * @throws \DrdPlus\Tables\Armaments\Exceptions\CanNotHoldWeaponByOneHand
      * @throws \DrdPlus\Tables\Armaments\Exceptions\CanNotHoldWeaponByTwoHands
@@ -958,9 +817,6 @@ class Armourer extends StrictObject
 
     /**
      * Your less-dominant hand is weaker (try it)
-     *
-     * @param Strength $strengthOfMainHand
-     * @return Strength
      */
     public function getStrengthOfOffhand(Strength $strengthOfMainHand): Strength
     {
@@ -969,9 +825,6 @@ class Armourer extends StrictObject
 
     /**
      * Warning! Only if you hold SINGLE-handed weapons by both hands, you will get bonus to strength.
-     *
-     * @param Strength $strengthOfMainHand
-     * @return Strength
      */
     public function getStrengthForOneHandedWeaponHoldByTwoHands(Strength $strengthOfMainHand): Strength
     {
@@ -979,17 +832,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param MeleeWeaponCode $meleeWeaponCode
-     * @param WeaponCategoryCode $meleeWeaponCategoryCode
-     * @param Strength $requiredStrength
-     * @param int $weaponLength
-     * @param int $offensiveness
-     * @param int $wounds
-     * @param PhysicalWoundTypeCode $woundTypeCode
-     * @param int $cover
-     * @param Weight $weight
-     * @param bool $twoHandedOnly
-     * @return bool
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownMeleeWeapon
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\NewWeaponIsNotOfRequiredType
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\DifferentWeaponIsUnderSameName
@@ -1024,18 +866,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param RangedWeaponCode $rangedWeaponCode
-     * @param WeaponCategoryCode $rangedWeaponCategoryCode
-     * @param Strength $requiredStrength
-     * @param DistanceBonus $range
-     * @param int $offensiveness
-     * @param int $wounds
-     * @param PhysicalWoundTypeCode $woundTypeCode
-     * @param int $cover
-     * @param Weight $weight
-     * @param bool $twoHandedOnly
-     * @param Strength $maximalApplicableStrength
-     * @return bool
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownRangedWeapon
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\NewWeaponIsNotOfRequiredType
      * @throws \DrdPlus\Tables\Armaments\Weapons\Exceptions\DifferentWeaponIsUnderSameName
@@ -1086,13 +916,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param BodyArmorCode $bodyArmorCode
-     * @param Strength $requiredStrength
-     * @param int $restriction
-     * @param int $protection
-     * @param Weight $weight
-     * @param PositiveInteger $roundsToPutOn
-     * @return bool
      * @throws \DrdPlus\Tables\Armaments\Armors\Exceptions\DifferentBodyArmorIsUnderSameName
      */
     public function addCustomBodyArmor(
@@ -1115,12 +938,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param HelmCode $helmCode
-     * @param Strength $requiredStrength
-     * @param int $restriction
-     * @param int $protection
-     * @param Weight $weight
-     * @return bool
      * @throws \DrdPlus\Tables\Armaments\Armors\Exceptions\DifferentHelmIsUnderSameName
      */
     public function addCustomHelm(
@@ -1143,11 +960,7 @@ class Armourer extends StrictObject
     /**
      * @link https://pph.drdplus.info/#niceni
      * There is NO malus for missing strength (we are not fighting, just smashing)
-     * @param MeleeWeaponlikeCode $meleeWeaponlikeCode
-     * @param Strength $strengthOfMainHand
-     * @param ItemHoldingCode $weaponlikeHolding
      * @param bool $weaponIsInappropriate like bare hands
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\CanNotUseMeleeWeaponlikeBecauseOfMissingStrength
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
@@ -1176,9 +989,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param string $weaponLikeValue
-     * @param bool $preferMelee
-     * @return WeaponlikeCode
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike
      */
     public function getWeaponlikeCode(string $weaponLikeValue, bool $preferMelee = true): WeaponlikeCode
@@ -1200,8 +1010,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param string $meleeWeaponLikeValue
-     * @return MeleeWeaponlikeCode
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownMeleeWeaponlike
      */
     public function getMeleeWeaponlikeCode(string $meleeWeaponLikeValue): MeleeWeaponlikeCode
@@ -1216,8 +1024,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param ShieldCode $shieldCode
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownShield
      */
     public function getCoverOfShield(ShieldCode $shieldCode): int
@@ -1226,8 +1032,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param HelmCode $helmCode
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmor
      */
     public function getProtectionOfHelm(HelmCode $helmCode): int
@@ -1236,8 +1040,6 @@ class Armourer extends StrictObject
     }
 
     /**
-     * @param BodyArmorCode $bodyArmorCode
-     * @return int
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmor
      */
     public function getProtectionOfBodyArmor(BodyArmorCode $bodyArmorCode): int

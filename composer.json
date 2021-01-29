@@ -1,21 +1,26 @@
 {
-  "name": "drdplus/armourer",
-  "license": "MIT",
-  "type": "library",
-  "description": "DrD+ armaments and their stats",
-  "autoload": {
-    "psr-4": {
-      "DrdPlus\\": "DrdPlus/"
+    "name": "drdplus/armourer",
+    "license": "MIT",
+    "type": "library",
+    "description": "DrD+ armaments and their stats",
+    "autoload": {
+        "psr-4": {
+            "DrdPlus\\Armourer\\": "Armourer",
+            "DrdPlus\\Tests\\Armourer\\": "tests/Armourer"
+        }
+    },
+    "config": {
+        "sort-packages": false
+    },
+    "require": {
+        "php": ">=8.0",
+        "drdplus/properties": "^2.1"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-master",
+        "phpunit/phpunit": "^9.5",
+        "mockery/mockery": "^1.4",
+        "granam/exceptions-hierarchy": "^5.0",
+        "granam/test-with-mockery": "^1.0"
     }
-  },
-  "require": {
-    "php": ">=7.1",
-    "drdplus/properties": "^2.1"
-  },
-  "require-dev": {
-    "roave/security-advisories": "dev-master",
-    "phpunit/phpunit": "^8.3",
-    "mockery/mockery": "^1.2",
-    "granam/exceptions-hierarchy": "^5.0"
-  }
 }

@@ -1,7 +1,7 @@
 <phpunit
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.8/phpunit.xsd"
-        bootstrap="./DrdPlus/Tests/tests_bootstrap.php"
+        xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/9.3/phpunit.xsd"
+        bootstrap="./tests/tests_bootstrap.php"
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
         convertWarningsToExceptions="true"
@@ -12,15 +12,12 @@
         >
     <testsuites>
         <testsuite name="all">
-            <directory>./DrdPlus/Tests</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="false">
-            <directory>./DrdPlus</directory>
-            <exclude>
-                <directory>./DrdPlus/Tests</directory>
-            </exclude>
+            <directory>Armourer</directory>
         </whitelist>
     </filter>
 </phpunit>

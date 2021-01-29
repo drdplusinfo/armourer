@@ -1,7 +1,6 @@
-<?php
-declare(strict_types=1); // on PHP 7+ are standard PHP methods strict to types of given parameters
+<?php declare(strict_types=1);
 
-namespace DrdPlus\Tests\Tables\Armaments;
+namespace DrdPlus\Tests\Armourer;
 
 use DrdPlus\Codes\Armaments\BodyArmorCode;
 use DrdPlus\Codes\Armaments\HelmCode;
@@ -49,7 +48,7 @@ use Granam\Integer\IntegerInterface;
 use Granam\Integer\PositiveInteger;
 use Granam\Integer\PositiveIntegerObject;
 use Granam\String\StringTools;
-use Granam\Tests\Tools\TestWithMockery;
+use Granam\Tests\TestWithMockery;
 use Mockery\MockInterface;
 
 class ArmourerTest extends TestWithMockery
@@ -128,10 +127,9 @@ class ArmourerTest extends TestWithMockery
     }
 
     /**
-     * @param $value
      * @return \Mockery\MockInterface|Size
      */
-    private function createSize($value = null): Size
+    private function createSize(int $value = null): Size
     {
         $size = $this->mockery(Size::class);
         if ($value !== null) {
@@ -201,9 +199,6 @@ class ArmourerTest extends TestWithMockery
     /**
      * @test
      * @dataProvider provideValuesForWeaponUsability
-     * @param int $strength
-     * @param int $requiredStrength ,
-     * @param bool $canUseIt
      */
     public function I_can_find_out_if_can_use_weaponlike_with_a_strength(
         int $strength,
@@ -244,13 +239,9 @@ class ArmourerTest extends TestWithMockery
     /**
      * @test
      * @dataProvider provideBodySizeAndStrength
-     * @param int|bool $requiredStrength
-     * @param int $bodySize
-     * @param int $strength
-     * @param int $expectedMissingStrength
      */
     public function I_can_get_missing_strength_and_sanction_values_for_body_armor_and_helm(
-        $requiredStrength,
+        int|bool $requiredStrength,
         int $bodySize,
         int $strength,
         int $expectedMissingStrength
@@ -304,9 +295,9 @@ class ArmourerTest extends TestWithMockery
         $armorSanctionsTable->shouldReceive('getAgilityMalus')
             ->zeroOrMoreTimes()
             ->with($expectedMissingStrength)
-            ->andReturn(1247394);
+            ->andReturn(1_247_394);
         self::assertSame(
-            1247394,
+            1_247_394,
             $armourer->getAgilityMalusByStrengthWithArmor($bodyArmorCode, Strength::getIt($strength), Size::getIt($bodySize))
         );
     }
@@ -330,7 +321,6 @@ class ArmourerTest extends TestWithMockery
     }
 
     /**
-     * @param string $value
      * @return \Mockery\MockInterface|BodyArmorCode
      */
     private function createBodyArmorCode(string $value = null): BodyArmorCode
@@ -353,10 +343,9 @@ class ArmourerTest extends TestWithMockery
     }
 
     /**
-     * @param $value
      * @return \Mockery\MockInterface|HelmCode
      */
-    private function createHelmCode($value = null): HelmCode
+    private function createHelmCode(string $value = null): HelmCode
     {
         $helmCode = $this->mockery(HelmCode::class);
         if ($value !== null) {
@@ -370,16 +359,12 @@ class ArmourerTest extends TestWithMockery
     /**
      * @test
      * @dataProvider provideStrengthAndMeleeWeaponGroup
-     * @param int $requiredStrength
-     * @param int $strength
-     * @param int $expectedMissingStrength
-     * @param string $weaponGroup
      */
     public function I_can_get_missing_strength_and_sanction_values_for_melee_weapon(
         int $requiredStrength,
         int $strength,
         int $expectedMissingStrength,
-        $weaponGroup
+        string $weaponGroup
     ): void
     {
         $armourer = new Armourer($tables = $this->createTables());
@@ -403,9 +388,9 @@ class ArmourerTest extends TestWithMockery
         $meleeWeaponSanctionsTable->shouldReceive('getFightNumberSanction')
             ->zeroOrMoreTimes()
             ->with($expectedMissingStrength)
-            ->andReturn(7837836);
+            ->andReturn(7_837_836);
         self::assertSame(
-            7837836,
+            7_837_836,
             $armourer->getFightNumberMalusByStrengthWithWeaponOrShield($meleeWeaponCode, Strength::getIt($strength))
         );
 
@@ -489,11 +474,9 @@ class ArmourerTest extends TestWithMockery
     }
 
     /**
-     * @param $value
-     * @param string $matchingWeaponGroup
      * @return \Mockery\MockInterface|MeleeWeaponCode
      */
-    private function createMeleeWeaponCode($value, $matchingWeaponGroup): MeleeWeaponCode
+    private function createMeleeWeaponCode(string $value, string $matchingWeaponGroup): MeleeWeaponCode
     {
         $code = $this->mockery(MeleeWeaponCode::class);
         $code->shouldReceive('getValue')
@@ -638,10 +621,6 @@ class ArmourerTest extends TestWithMockery
     /**
      * @test
      * @dataProvider provideStrengthAndRangedWeaponGroup
-     * @param int $requiredStrength
-     * @param int $strength
-     * @param int $expectedMissingStrength
-     * @param string $weaponGroup
      */
     public function I_can_get_missing_strength_and_sanction_values_for_range_weapon(
         int $requiredStrength,
@@ -767,12 +746,9 @@ class ArmourerTest extends TestWithMockery
     }
 
     /**
-     * @param $value
-     * @param string $matchingWeaponGroup
-     * @param bool $isAlsoMeleeArmament
      * @return \Mockery\MockInterface|RangedWeaponCode
      */
-    private function createRangedWeaponCode($value, string $matchingWeaponGroup, $isAlsoMeleeArmament = false): RangedWeaponCode
+    private function createRangedWeaponCode(mixed $value, string $matchingWeaponGroup, bool $isAlsoMeleeArmament = false): RangedWeaponCode
     {
         $code = $this->mockery(RangedWeaponCode::class);
         $code->shouldReceive('getValue')
@@ -845,11 +821,9 @@ class ArmourerTest extends TestWithMockery
     }
 
     /**
-     * @param int $bonusValue
-     * @param $inMeters
      * @return \Mockery\MockInterface|Distance
      */
-    private function createDistanceWithBonus($bonusValue, $inMeters = false): Distance
+    private function createDistanceWithBonus(int $bonusValue, int|bool $inMeters = false): Distance
     {
         $distance = $this->mockery(Distance::class);
         $distance->shouldReceive('getBonus')
@@ -867,10 +841,9 @@ class ArmourerTest extends TestWithMockery
     }
 
     /**
-     * @param int $value
      * @return \Mockery\MockInterface|EncounterRange
      */
-    private function createEncounterRange($value): EncounterRange
+    private function createEncounterRange(int $value): EncounterRange
     {
         $encounterRange = $this->mockery(EncounterRange::class);
         $encounterRange->shouldReceive('getValue')
@@ -882,12 +855,9 @@ class ArmourerTest extends TestWithMockery
     }
 
     /**
-     * @param int $value
-     * @param $inMeters = false
-     * @param DistanceTable $distanceTable = null
      * @return \Mockery\MockInterface|MaximalRange
      */
-    private function createMaximalRange($value, $inMeters = false, DistanceTable $distanceTable = null): MaximalRange
+    private function createMaximalRange(int $value, int|bool $inMeters = false, DistanceTable $distanceTable = null): MaximalRange
     {
         $maximalRange = $this->mockery(MaximalRange::class);
         $maximalRange->shouldReceive('getValue')
@@ -914,7 +884,7 @@ class ArmourerTest extends TestWithMockery
     public function I_can_not_get_attack_number_modifier_with_greater_encounter_than_maximal_range(): void
     {
         $this->expectException(\DrdPlus\Tables\Armaments\Exceptions\EncounterRangeCanNotBeGreaterThanMaximalRange::class);
-        $this->expectExceptionMessageRegExp('~456~');
+        $this->expectErrorMessageMatches('~456~');
         (new Armourer($this->createTables()))->getAttackNumberModifierByDistance(
             $this->createDistanceWithBonus(123),
             $this->createEncounterRange(456),
@@ -928,14 +898,14 @@ class ArmourerTest extends TestWithMockery
     public function I_can_not_get_attack_number_modifier_with_greater_distance_than_maximal_range(): void
     {
         $this->expectException(\DrdPlus\Tables\Armaments\Exceptions\DistanceIsOutOfMaximalRange::class);
-        $this->expectExceptionMessageRegExp('~457~');
+        $this->expectErrorMessageMatches('~457~');
         $tables = $this->createTables();
         $tables->shouldReceive('getDistanceTable')
             ->andReturn($distanceTable = $this->createDistanceTable());
         (new Armourer($tables))->getAttackNumberModifierByDistance(
-            $this->createDistanceWithBonus(457, 987654321),
+            $this->createDistanceWithBonus(457, 987_654_321),
             $this->createEncounterRange(123),
-            $this->createMaximalRange(456, 6655443322, $distanceTable)
+            $this->createMaximalRange(456, 6_655_443_322, $distanceTable)
         );
     }
 
@@ -950,10 +920,8 @@ class ArmourerTest extends TestWithMockery
     /**
      * @test
      * @dataProvider provideSizeAndExpectedAttackModifier
-     * @param $sizeValue
-     * @param $expectedModifier
      */
-    public function I_can_get_attack_number_modifier_by_target_size($sizeValue, $expectedModifier): void
+    public function I_can_get_attack_number_modifier_by_target_size(int $sizeValue, int $expectedModifier): void
     {
         self::assertSame(
             $expectedModifier,
@@ -975,11 +943,6 @@ class ArmourerTest extends TestWithMockery
     /**
      * @test
      * @dataProvider provideWeaponsForRangeEncounter
-     * @param RangedWeaponCode $rangedWeaponCode
-     * @param Tables $tables
-     * @param Strength $strength
-     * @param int $speedValue
-     * @param int $expectedEncounterRangeValue
      */
     public function I_can_get_encounter_range_of_any_range_weapon(
         RangedWeaponCode $rangedWeaponCode,
@@ -1108,10 +1071,9 @@ class ArmourerTest extends TestWithMockery
     }
 
     /**
-     * @param $value
      * @return \Mockery\MockInterface|Speed
      */
-    private function createSpeed($value = null): Speed
+    private function createSpeed(int $value = null): Speed
     {
         $speed = $this->mockery(Speed::class);
         if ($value !== null) {
@@ -1149,11 +1111,6 @@ class ArmourerTest extends TestWithMockery
     /**
      * @test
      * @dataProvider provideWeaponsForRangeEncounter
-     * @param RangedWeaponCode $rangedWeaponCode
-     * @param Tables $tables
-     * @param Strength $strength
-     * @param int $speedValue
-     * @param int $expectedEncounterRange
      */
     public function I_can_get_maximal_range_with_ranged_weapon(
         RangedWeaponCode $rangedWeaponCode,
@@ -1333,8 +1290,6 @@ class ArmourerTest extends TestWithMockery
     }
 
     /**
-     * @param string $value
-     * @param string $matchingMeleeWeaponlikeCategory
      * @return \Mockery\MockInterface|MeleeWeaponlikeCode
      * @throws \ReflectionException
      */
@@ -1907,10 +1862,9 @@ class ArmourerTest extends TestWithMockery
     }
 
     /**
-     * @param mixed $value
      * @return \Mockery\MockInterface|PositiveInteger
      */
-    private function createPositiveInteger($value = null): PositiveInteger
+    private function createPositiveInteger(int $value = null): PositiveInteger
     {
         $positiveInteger = $this->mockery(PositiveInteger::class);
         if ($value !== null) {
@@ -2089,7 +2043,6 @@ class ArmourerTest extends TestWithMockery
             ->andReturn(789);
         $tables->shouldReceive('getBaseOfWoundsTable')
             ->andReturn($baseOfWoundsTable = $this->mockery(BaseOfWoundsTable::class));
-        /** @noinspection PhpUnusedParameterInspection */
         $baseOfWoundsTable->shouldReceive('getBaseOfWounds')
             ->zeroOrMoreTimes()
             ->with($currentStrength, $this->type(IntegerInterface::class))
@@ -2181,7 +2134,7 @@ class ArmourerTest extends TestWithMockery
     public function I_can_not_get_base_of_wounds_bonus_for_too_short_melee_weapon(): void
     {
         $this->expectException(\DrdPlus\Tables\Armaments\Exceptions\CanNotHoldWeaponByTwoHands::class);
-        $this->expectExceptionMessageRegExp('~stiletto~');
+        $this->expectErrorMessageMatches('~stiletto~');
         $tables = $this->createTables();
         $dagger = $this->createMeleeWeaponCode('stiletto', 'knifeOrDagger');
         $tables->shouldReceive('getWeaponlikeTableByWeaponlikeCode')
@@ -2206,10 +2159,6 @@ class ArmourerTest extends TestWithMockery
     /**
      * @test
      * @dataProvider provideWeaponlikeToGetStrengthForIt
-     * @param WeaponlikeCode $weaponlikeCode
-     * @param ItemHoldingCode $itemHoldingCode
-     * @param Strength $strengthOfMainHand
-     * @param int $expectedStrength
      */
     public function I_can_get_strength_for_weapon_or_shield(
         WeaponlikeCode $weaponlikeCode,
@@ -2269,7 +2218,7 @@ class ArmourerTest extends TestWithMockery
     public function I_can_not_get_strength_for_single_handed_only_weaponlike_when_holding_by_two_hands(): void
     {
         $this->expectException(\DrdPlus\Tables\Armaments\Exceptions\CanNotHoldWeaponByTwoHands::class);
-        $this->expectExceptionMessageRegExp('~pavise~');
+        $this->expectErrorMessageMatches('~pavise~');
         // its quite strange, but currently every shield, including monstrous pavise, is single-handed only
         (new Armourer(Tables::getIt()))->getStrengthForWeaponOrShield(
             ShieldCode::getIt(ShieldCode::PAVISE),
@@ -2284,7 +2233,7 @@ class ArmourerTest extends TestWithMockery
     public function I_can_not_get_strength_for_two_handed_only_weaponlike_when_holding_by_one_hand(): void
     {
         $this->expectException(\DrdPlus\Tables\Armaments\Exceptions\CanNotHoldWeaponByOneHand::class);
-        $this->expectExceptionMessageRegExp('~long_bow~');
+        $this->expectErrorMessageMatches('~long_bow~');
         // its quite strange, but currently every shield, including monstrous pavise, is single-handed only
         (new Armourer(Tables::getIt()))->getStrengthForWeaponOrShield(
             RangedWeaponCode::getIt(RangedWeaponCode::LONG_BOW),
@@ -2491,7 +2440,7 @@ class ArmourerTest extends TestWithMockery
     public function I_can_not_get_power_of_destruction_if_can_not_bear_weapon(): void
     {
         $this->expectException(\DrdPlus\Tables\Armaments\Exceptions\CanNotUseMeleeWeaponlikeBecauseOfMissingStrength::class);
-        $this->expectExceptionMessageRegExp("~'foo' is too heavy~");
+        $this->expectErrorMessageMatches("~'foo' is too heavy~");
         $armourer = new Armourer($tables = $this->createTables());
         $weaponlike = $this->createMeleeWeaponCode('foo', WeaponCategoryCode::SWORDS);
         $tables->shouldReceive('getArmamentStrengthSanctionsTableByCode')
