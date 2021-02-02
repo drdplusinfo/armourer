@@ -22,6 +22,8 @@ use DrdPlus\Tables\Armaments\Armors\ArmorStrengthSanctionsTable;
 use DrdPlus\Tables\Armaments\Armors\BodyArmorsTable;
 use DrdPlus\Tables\Armaments\Armors\HelmsTable;
 use DrdPlus\Armourer\Armourer;
+use DrdPlus\Tables\Armaments\Exceptions\UnknownMeleeWeaponlike;
+use DrdPlus\Tables\Armaments\Exceptions\UnknownWeaponlike;
 use DrdPlus\Tables\Armaments\MissingProtectiveArmamentSkill;
 use DrdPlus\Tables\Armaments\Partials\MeleeWeaponlikesTable;
 use DrdPlus\Tables\Armaments\Partials\StrengthSanctionsInterface;
@@ -1127,6 +1129,23 @@ class ArmourerTest extends TestWithMockery
         );
         self::assertSame(
             MaximalRange::getItForRangedWeapon(EncounterRange::getIt($expectedEncounterRange))->getValue(),
+            $maximalRange->getValue()
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider provideWeaponsForRangeEncounter
+     */
+    public function I_can_get_maximal_range_with_melee_weapon(): void
+    {
+        $maximalRange = Armourer::getIt()->getMaximalRangeWithWeaponlike(
+            MeleeWeaponCode::getIt(MeleeWeaponCode::AXE),
+            Strength::getIt(0),
+            $this->createSpeed(0)
+        );
+        self::assertSame(
+            MaximalRange::getItForMeleeWeapon(EncounterRange::getIt(0))->getValue(),
             $maximalRange->getValue()
         );
     }
@@ -2244,7 +2263,6 @@ class ArmourerTest extends TestWithMockery
 
     /**
      * @test
-     * @runInSeparateProcess
      */
     public function I_can_add_new_melee_weapon(): void
     {
@@ -2277,17 +2295,20 @@ class ArmourerTest extends TestWithMockery
 
     /**
      * @test
-     * @runInSeparateProcess
+     * @dataProvider provideCustomRangedWeapon
      */
-    public function I_can_add_new_ranged_weapon(): void
+    public function I_can_add_new_ranged_weapon(
+        string $name,
+        WeaponCategoryCode $weaponCategoryCode,
+        Strength $maximalApplicableStrength
+    ): void
     {
         $armourer = new Armourer(Tables::getIt());
-        $name = \uniqid('monstrous bow', true);
-        RangedWeaponCode::addNewRangedWeaponCode($name, WeaponCategoryCode::getIt(WeaponCategoryCode::BOWS), []);
-        $monstrousBow = RangedWeaponCode::getIt($name);
+        RangedWeaponCode::addNewRangedWeaponCode($name, $weaponCategoryCode, []);
+        $customRangedWeapon = RangedWeaponCode::getIt($name);
         $added = $armourer->addCustomRangedWeapon(
-            $monstrousBow,
-            WeaponCategoryCode::getIt(WeaponCategoryCode::BOWS),
+            $customRangedWeapon,
+            $weaponCategoryCode,
             $requiredStrength = Strength::getIt(0),
             $range = new DistanceBonus(123, Tables::getIt()->getDistanceTable()),
             $offensiveness = 2,
@@ -2296,18 +2317,34 @@ class ArmourerTest extends TestWithMockery
             $cover = 4,
             $weight = new Weight(5, Weight::KG, Tables::getIt()->getWeightTable()),
             $twoHandedOnly = false,
-            $maximalApplicableStrength = Strength::getIt(123)
+            $maximalApplicableStrength
         );
         self::assertTrue($added);
-        self::assertSame($requiredStrength->getValue(), $armourer->getRequiredStrengthForArmament($monstrousBow));
-        self::assertSame($range->getValue(), $armourer->getRangeOfRangedWeapon($monstrousBow));
-        self::assertSame($offensiveness, $armourer->getOffensivenessOfWeaponlike($monstrousBow));
-        self::assertSame($wounds, $armourer->getWoundsOfWeaponlike($monstrousBow));
-        self::assertSame($woundTypeCode->getValue(), $armourer->getWoundsTypeOfWeaponlike($monstrousBow));
-        self::assertSame($cover, $armourer->getCoverOfWeaponOrShield($monstrousBow));
-        self::assertSame($weight->getKilograms(), $armourer->getWeightOfArmament($monstrousBow));
-        self::assertSame($twoHandedOnly, $armourer->isTwoHandedOnly($monstrousBow));
-        self::assertSame($maximalApplicableStrength->getValue(), $armourer->getMaximalApplicableStrength($monstrousBow));
+        self::assertSame($requiredStrength->getValue(), $armourer->getRequiredStrengthForArmament($customRangedWeapon));
+        self::assertSame($range->getValue(), $armourer->getRangeOfRangedWeapon($customRangedWeapon));
+        self::assertSame($offensiveness, $armourer->getOffensivenessOfWeaponlike($customRangedWeapon));
+        self::assertSame($wounds, $armourer->getWoundsOfWeaponlike($customRangedWeapon));
+        self::assertSame($woundTypeCode->getValue(), $armourer->getWoundsTypeOfWeaponlike($customRangedWeapon));
+        self::assertSame($cover, $armourer->getCoverOfWeaponOrShield($customRangedWeapon));
+        self::assertSame($weight->getKilograms(), $armourer->getWeightOfArmament($customRangedWeapon));
+        self::assertSame($twoHandedOnly, $armourer->isTwoHandedOnly($customRangedWeapon));
+        self::assertSame($maximalApplicableStrength->getValue(), $armourer->getMaximalApplicableStrength($customRangedWeapon));
+    }
+
+    public function provideCustomRangedWeapon(): array
+    {
+        return [
+            'monstrous bow' => [
+                uniqid('monstrous bow', true),
+                WeaponCategoryCode::getIt(WeaponCategoryCode::BOWS),
+                Strength::getIt(123),
+            ],
+            'flying boot' => [
+                uniqid('flying boot', true),
+                WeaponCategoryCode::getIt(WeaponCategoryCode::THROWING_WEAPONS),
+                Strength::getIt(999),
+            ],
+        ];
     }
 
     /**
@@ -2514,6 +2551,26 @@ class ArmourerTest extends TestWithMockery
                 "$shieldValue should result into instance of " . ShieldCode::class
             );
         }
+    }
+
+    /**
+     * @test
+     */
+    public function I_am_stopped_if_require_unknown_weaponlike_code()
+    {
+        $this->expectException(UnknownWeaponlike::class);
+        $this->expectExceptionMessageMatches('~nonsense~');
+        Armourer::getIt()->getWeaponlikeCode('nonsense');
+    }
+
+    /**
+     * @test
+     */
+    public function I_am_stopped_if_require_unknown_melee_weaponlike_code()
+    {
+        $this->expectException(UnknownMeleeWeaponlike::class);
+        $this->expectExceptionMessageMatches('~nonsense~');
+        Armourer::getIt()->getMeleeWeaponlikeCode('nonsense');
     }
 
     /**
