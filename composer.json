@@ -13,14 +13,14 @@
         "sort-packages": false
     },
     "require": {
-        "php": ">=8.0",
+        "php": ">=7.3",
         "drdplus/properties": "^2.1"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
-        "phpunit/phpunit": "^9.5",
         "mockery/mockery": "^1.4",
         "granam/exceptions-hierarchy": "^5.0",
-        "granam/test-with-mockery": "^1.0"
+        "granam/test-with-mockery": "^1.0",
+        "phpunit/phpunit": "^9.5"
     }
 }

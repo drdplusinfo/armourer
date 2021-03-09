@@ -241,9 +241,10 @@ class ArmourerTest extends TestWithMockery
     /**
      * @test
      * @dataProvider provideBodySizeAndStrength
+     * @param int|bool $requiredStrength
      */
     public function I_can_get_missing_strength_and_sanction_values_for_body_armor_and_helm(
-        int|bool $requiredStrength,
+        $requiredStrength,
         int $bodySize,
         int $strength,
         int $expectedMissingStrength
@@ -297,9 +298,9 @@ class ArmourerTest extends TestWithMockery
         $armorSanctionsTable->shouldReceive('getAgilityMalus')
             ->zeroOrMoreTimes()
             ->with($expectedMissingStrength)
-            ->andReturn(1_247_394);
+            ->andReturn(1247394);
         self::assertSame(
-            1_247_394,
+            1247394,
             $armourer->getAgilityMalusByStrengthWithArmor($bodyArmorCode, Strength::getIt($strength), Size::getIt($bodySize))
         );
     }
@@ -390,9 +391,9 @@ class ArmourerTest extends TestWithMockery
         $meleeWeaponSanctionsTable->shouldReceive('getFightNumberSanction')
             ->zeroOrMoreTimes()
             ->with($expectedMissingStrength)
-            ->andReturn(7_837_836);
+            ->andReturn(7837836);
         self::assertSame(
-            7_837_836,
+            7837836,
             $armourer->getFightNumberMalusByStrengthWithWeaponOrShield($meleeWeaponCode, Strength::getIt($strength))
         );
 
@@ -748,9 +749,12 @@ class ArmourerTest extends TestWithMockery
     }
 
     /**
+     * @param mixed $value
+     * @param string $matchingWeaponGroup
+     * @param bool $isAlsoMeleeArmament = false
      * @return \Mockery\MockInterface|RangedWeaponCode
      */
-    private function createRangedWeaponCode(mixed $value, string $matchingWeaponGroup, bool $isAlsoMeleeArmament = false): RangedWeaponCode
+    private function createRangedWeaponCode($value, string $matchingWeaponGroup, bool $isAlsoMeleeArmament = false): RangedWeaponCode
     {
         $code = $this->mockery(RangedWeaponCode::class);
         $code->shouldReceive('getValue')
@@ -823,9 +827,11 @@ class ArmourerTest extends TestWithMockery
     }
 
     /**
+     * @param int $bonusValue
+     * @param int|bool $inMeters
      * @return \Mockery\MockInterface|Distance
      */
-    private function createDistanceWithBonus(int $bonusValue, int|bool $inMeters = false): Distance
+    private function createDistanceWithBonus(int $bonusValue, $inMeters = false): Distance
     {
         $distance = $this->mockery(Distance::class);
         $distance->shouldReceive('getBonus')
@@ -857,9 +863,12 @@ class ArmourerTest extends TestWithMockery
     }
 
     /**
+     * @param int $value
+     * @param int|bool $inMeters
+     * @param DistanceTable|null $distanceTable
      * @return \Mockery\MockInterface|MaximalRange
      */
-    private function createMaximalRange(int $value, int|bool $inMeters = false, DistanceTable $distanceTable = null): MaximalRange
+    private function createMaximalRange(int $value, $inMeters = false, DistanceTable $distanceTable = null): MaximalRange
     {
         $maximalRange = $this->mockery(MaximalRange::class);
         $maximalRange->shouldReceive('getValue')
@@ -905,9 +914,9 @@ class ArmourerTest extends TestWithMockery
         $tables->shouldReceive('getDistanceTable')
             ->andReturn($distanceTable = $this->createDistanceTable());
         (new Armourer($tables))->getAttackNumberModifierByDistance(
-            $this->createDistanceWithBonus(457, 987_654_321),
+            $this->createDistanceWithBonus(457, 987654321),
             $this->createEncounterRange(123),
-            $this->createMaximalRange(456, 6_655_443_322, $distanceTable)
+            $this->createMaximalRange(456, 6655443322, $distanceTable)
         );
     }
 

@@ -49,8 +49,11 @@ class Armourer extends StrictObject
         return $armourer;
     }
 
-    public function __construct(private Tables $tables)
+    private $tables;
+
+    public function __construct(Tables $tables)
     {
+        $this->tables = $tables;
     }
 
     public function getTables(): Tables
@@ -59,6 +62,7 @@ class Armourer extends StrictObject
     }
 
     // WEAPONS ONLY
+
     /**
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
      */
@@ -198,6 +202,7 @@ class Armourer extends StrictObject
     }
 
     // shield-and-armor-specific
+
     /**
      * Restriction affects fight number (Fight number malus).
      *
@@ -210,6 +215,7 @@ class Armourer extends StrictObject
     }
 
     // range-weapon-specific
+
     /**
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownRangedWeapon
      */
@@ -219,6 +225,7 @@ class Armourer extends StrictObject
     }
 
     // projectile-specific
+
     /**
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownProjectile
      */
@@ -252,6 +259,7 @@ class Armourer extends StrictObject
     }
 
     // ARMAMENTS USAGE AFFECTED BY STRENGTH
+
     /**
      * Gives effective strength usable for attack with given weapon (has usage for bows and crossbows).
      *
@@ -458,6 +466,7 @@ class Armourer extends StrictObject
     }
 
     // range-weapon-specific usage affected by properties
+
     /**
      * The final number of rounds needed to load a weapon.
      *
@@ -604,6 +613,7 @@ class Armourer extends StrictObject
     }
 
     // armor-specific usage affected by strength
+
     /**
      * @throws \DrdPlus\Tables\Armaments\Exceptions\CanNotUseArmorBecauseOfMissingStrength
      * @throws \DrdPlus\Tables\Armaments\Exceptions\UnknownArmament
@@ -637,6 +647,7 @@ class Armourer extends StrictObject
     }
 
     // MISSING WEAPON SKILL
+
     /**
      * Note about shields: there is no such skill as FightWithShields, any attempt to fight with shield results into
      * zero skill rank.
@@ -662,10 +673,10 @@ class Armourer extends StrictObject
     /**
      * Gives malus to cover with a weapon or a shield according to given skill rank.
      * Warning: PPH gives you invalid info about cover with shield malus on PPH page 86 right column (-2 if you do not
-     * have maximal skill). Correct is @see ShieldUsageSkillTable
+     * have maximal skill). Correct is @throws \DrdPlus\Tables\Armaments\Partials\Exceptions\UnexpectedSkillRank
+     * @see ShieldUsageSkillTable
      * Note about shield: shield is always used as a shield for cover, even if is used for desperate attack.
      *
-     * @throws \DrdPlus\Tables\Armaments\Partials\Exceptions\UnexpectedSkillRank
      */
     public function getCoverMalusForSkillRank(PositiveInteger $weaponTypeSkillRank, WeaponlikeCode $weaponOrShield): int
     {
@@ -689,6 +700,7 @@ class Armourer extends StrictObject
     }
 
     // missing shield-specific skill
+
     /**
      * Applicable to lower shield or armor Restriction (Fight number malus), but can not make it positive.
      *
@@ -724,6 +736,7 @@ class Armourer extends StrictObject
     }
 
     // summations
+
     /**
      * Gives base of wound with a weapon and user strength.
      *
