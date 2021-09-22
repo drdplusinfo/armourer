@@ -6,12 +6,12 @@
          colors="true">
     <coverage includeUncoveredFiles="true" processUncoveredFiles="false">
         <include>
-            <directory>Armourer</directory>
+            <directory>./src</directory>
         </include>
     </coverage>
     <testsuites>
         <testsuite name="Armourer">
-            <directory>tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>

@@ -49,7 +49,7 @@ class Armourer extends StrictObject
         return $armourer;
     }
 
-    private $tables;
+    private Tables $tables;
 
     public function __construct(Tables $tables)
     {
@@ -754,9 +754,8 @@ class Armourer extends StrictObject
             $this->getApplicableStrength($weaponlikeCode, $currentStrength),
             new IntegerObject($this->getWoundsOfWeaponlike($weaponlikeCode))
         );
-        $baseOfWounds += $this->getBaseOfWoundsMalusByStrengthWithWeaponlike($weaponlikeCode, $currentStrength);
 
-        return $baseOfWounds;
+        return $baseOfWounds + $this->getBaseOfWoundsMalusByStrengthWithWeaponlike($weaponlikeCode, $currentStrength);
     }
 
     /**
